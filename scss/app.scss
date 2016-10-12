@@ -48,3 +48,12 @@
 
 @include motion-ui-transitions;
 @include motion-ui-animations;
+
+.webicons {
+  li {
+    padding: 0 0.1rem;
+    a {
+      padding: 0;
+    }
+  }
+}
