@@ -79,6 +79,8 @@ body {
   width: 100%;
 }
 
+/* parallax scroller */
+
 .parallax-background {
   background-color: #0080A0;
   height: 100%;
@@ -91,11 +93,19 @@ body {
   width: 100%;
 }
 
-.intro-text {
+.startpoint {
   font-size: 50px;
   color: #fff;
   text-align: center;
-  margin-top: 15%;
+  margin-top: 58px;
+
+}
+
+#canvas {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 58px;
 }
 
 .parallax-content {

@@ -18,3 +18,44 @@ function CssAnimations() {
 }
 
 window.addEventListener('scroll', CssAnimations);
+
+// D3 Path animation
+var bezierLine = d3
+  .line()
+  .x(function(d) { return d[0]; })
+  .y(function(d) { return d[1]; })
+  .curve(d3.curveBasis);
+
+var svg = d3
+  .select('#canvas')
+  .append('svg')
+  .attr('width', '100%')
+  .attr('height', '100%')
+
+var w = window.innerWidth;
+var h = window.innerHeight;
+
+var path = [
+  [w/2-5, 200],
+  [w/2, 300],
+  [w/2-50, 400],
+  [w/2+50, 500],
+  [w/2-75, 600],
+  [w/2+50, 400],
+  [w/2+300, 400],
+  [w/2+200, h],
+];
+
+svg.append('path')
+  .attr('d', bezierLine(path))
+  .attr('stroke', '#FFFFFF')
+  .attr('stroke-width', 10)
+  .attr('fill', 'none')
+  .transition()
+  .duration(3000)
+  .attrTween('stroke-dasharray', function() {
+    var len = this.getTotalLength();
+    return function(t) {
+      return (d3.interpolateString('0,' + len, len + ',0'))(t)
+    };
+  });
