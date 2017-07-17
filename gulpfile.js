@@ -1,5 +1,7 @@
-var gulp = require('gulp');
-var $    = require('gulp-load-plugins')();
+var gulp    = require('gulp');
+var $       = require('gulp-load-plugins')();
+var sass    = require('gulp-sass');
+var connect = require('gulp-connect');
 
 var sassPaths = [
   'bower_components/foundation-sites/scss',
@@ -11,14 +13,22 @@ gulp.task('sass', function() {
     .pipe($.sass({
       includePaths: sassPaths,
       outputStyle: 'compressed' // if css compressed **file size**
-    })
-      .on('error', $.sass.logError))
+    }).on('error', $.sass.logError))
     .pipe($.autoprefixer({
       browsers: ['last 2 versions', 'ie >= 9']
     }))
-    .pipe(gulp.dest('css'));
+    .pipe(gulp.dest('css'))
+    .pipe(connect.reload());
 });
 
-gulp.task('default', ['sass'], function() {
+gulp.task('watch', function() {
   gulp.watch(['scss/**/*.scss'], ['sass']);
+})
+
+gulp.task('serve', function() {
+  connect.server({
+    livereload: true
+  });
 });
+
+gulp.task('default', ['sass', 'serve', 'watch']);
