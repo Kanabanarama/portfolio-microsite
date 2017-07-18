@@ -19,43 +19,68 @@ function CssAnimations() {
 
 window.addEventListener('scroll', CssAnimations);
 
-// D3 Path animation
-var bezierLine = d3
-  .line()
-  .x(function(d) { return d[0]; })
-  .y(function(d) { return d[1]; })
-  .curve(d3.curveBasis);
+// Scroll bound line animation
+var w = window.innerWidth;
+var h = window.innerHeight;
+var posY = [window.pageYOffset];
 
-var svg = d3
+var canvas = d3
   .select('#canvas')
   .append('svg')
   .attr('width', '100%')
   .attr('height', '100%')
-
-var w = window.innerWidth;
-var h = window.innerHeight;
 
 var path = [
   [w/2-5, 200],
   [w/2, 300],
   [w/2-50, 400],
   [w/2+50, 500],
-  [w/2-75, 600],
-  [w/2+50, 400],
+  [w/2-50, 600],
+  [w/2, 400],
   [w/2+300, 400],
   [w/2+200, h],
 ];
 
-svg.append('path')
+var bezierLine = d3
+  .line()
+  .x(function(d) {
+    return d[0];
+  })
+  .y(function(d) {
+    return d[1];
+  })
+  .curve(d3.curveBasis);
+
+var pageSizeY =  $('.content-container')[0].getBoundingClientRect().height;
+var progress = 0;
+
+var stroke = canvas.selectAll('liner')
+  .data([posY])
+  .enter()
+  .append('path')
   .attr('d', bezierLine(path))
   .attr('stroke', '#FFFFFF')
   .attr('stroke-width', 10)
   .attr('fill', 'none')
-  .transition()
-  .duration(3000)
-  .attrTween('stroke-dasharray', function() {
-    var len = this.getTotalLength();
-    return function(t) {
-      return (d3.interpolateString('0,' + len, len + ',0'))(t)
-    };
+  .attr('stroke-dasharray', function(d) {
+    var strokeLength = this.getTotalLength();
+    progress = this.getTotalLength()-posY;
+    return strokeLength+' '+strokeLength;
+  })
+  .attr('stroke-dashoffset', function(d) {
+    return this.getTotalLength()-posY
   });
+
+var animatePath = function() {
+  stroke
+    .attr('stroke-dashoffset', function(d) {
+      progress = Math.min(progress, this.getTotalLength()-posY);
+      var progressWithLimit = Math.max(0, progress);
+      return progressWithLimit;
+    });
+}
+
+d3.select(window).on('scroll.scroller', function() {
+  posY = window.pageYOffset;
+  animatePath();
+});
