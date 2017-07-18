@@ -80,7 +80,57 @@ var animatePath = function() {
     });
 }
 
+// Scroll bound sectional animations
+var testData = [{'id': 1}];
+
+var keyframes = [
+  {
+    'position': 370,
+    'start': function() {
+      return canvas
+        .selectAll('circle')
+        .data(testData, function(d) { return d.id; })
+        .enter()
+          .append('circle')
+          .attr('r', 30)
+          .attr('cx', w/2-15)
+          .attr('cy', 570)
+          .attr('fill', '#FFFFFF');
+    },
+    'end': function() {
+      return canvas
+        .selectAll('circle')
+        .data(testData, function(d) { return d.id; })
+          .transition()
+          .duration(300)
+          .attr('r', 25)
+          .attrTween('fill', function() {
+            return function(t) {
+              return (d3.interpolateRgb('#FFFFFF', '#FF6666'))(t)
+            };
+          });
+    }
+  }
+];
+
+var initSections = function() {
+  keyframes.forEach(function(keyframe) {
+    keyframe.start();
+  });
+}
+initSections();
+
+var animateSections = function() {
+  keyframes.forEach(function(keyframe) {
+    if(window.pageYOffset > keyframe.position && !keyframe.status) {
+      keyframe.end().attr('data-animation-finished');
+      keyframe.status = 1;
+    }
+  });
+}
+
 d3.select(window).on('scroll.scroller', function() {
   posY = window.pageYOffset;
   animatePath();
+  animateSections();
 });
