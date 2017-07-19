@@ -134,3 +134,29 @@ d3.select(window).on('scroll.scroller', function() {
   animatePath();
   animateSections();
 });
+
+var positionDisplay = d3
+  .select("body")
+  .append("div")
+  .attr('data-allow-html', true)
+  .attr('class', 'tooltip top')
+  .style('display', 'none');
+var centerOffsetDisplay = d3
+  .select("body")
+  .append("div")
+  .attr('class', 'tooltip right')
+  .style('display', 'none');
+
+d3.select(window).on("mousemove", function() {
+  positionDisplay
+    .html('x: ' + d3.event.pageX + '<br /> y: ' + d3.event.pageY)
+    .style("top", (d3.event.pageY - 100) + "px")
+    .style("left", (d3.event.pageX - 34) + "px")
+    .style('display', 'inline');
+  var centerOffset =  d3.event.pageX - w/2;
+  centerOffsetDisplay
+    .html('center: ' + centerOffset)
+    .style("top", (d3.event.pageY - 25) + "px")
+    .style("left", (d3.event.pageX + 35) + "px")
+    .style('display', 'inline');
+});
