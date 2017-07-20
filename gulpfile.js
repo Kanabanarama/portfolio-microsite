@@ -21,6 +21,11 @@ gulp.task('sass', function() {
     .pipe(connect.reload());
 });
 
+gulp.task('javascript', function () {
+  gulp.src('js/**/*.js')
+    .pipe(connect.reload());
+});
+
 gulp.task('html', function () {
   gulp.src('*.html')
     .pipe(connect.reload());
@@ -34,6 +39,7 @@ gulp.task('serve', function() {
 
 gulp.task('watch', function() {
   gulp.watch(['scss/**/*.scss'], ['sass']);
+  gulp.watch(['js/**/*.js'], ['javascript']);
   gulp.watch(['*.html'], ['html']);
 })
 
