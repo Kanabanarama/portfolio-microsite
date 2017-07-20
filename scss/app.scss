@@ -75,21 +75,27 @@ body {
 
 .top-bar {
   position: fixed;
+  top : 0;
   z-index: 9000;
   width: 100%;
+}
+
+/* wrapper */
+
+.content-container {
+  background: transparent;
 }
 
 /* parallax scroller */
 
 .parallax-background {
   background-color: #0080A0;
-  height: 100%;
+  height: 2500px;
   background-repeat: no-repeat;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-  position: fixed;
   width: 100%;
 }
 
@@ -98,33 +104,32 @@ body {
   color: #fff;
   text-align: center;
   margin-top: 58px;
-
 }
 
-#canvas {
+#svg-1 {
   width: 100%;
   height: 100%;
   position: absolute;
   top: 58px;
 }
 
-.parallax-content {
+.parallax-foreground {
   max-width: 100%;
   min-height: 33%;
-  position: relative;
-  top: 33%;
-  margin-bottom: 33%;
   padding: 50px;
   font-size: 20px;
   background-color: #fff;
 }
 
-.parallax-content.hero {
+.parallax-foreground.hero {
+  position: absolute;
+  top: 150px;
+  left: 50px;
   background: transparent;
   padding-top: 330px;
 }
 
-.parallax-content.last {
+.parallax-foreground.last {
   margin-bottom: 0;
   padding-bottom: 1.25rem;
 }

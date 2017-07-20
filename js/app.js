@@ -22,13 +22,13 @@ window.addEventListener('scroll', CssAnimations);
 // Scroll bound line animation
 var w = window.innerWidth;
 var h = window.innerHeight;
-var posY = [window.pageYOffset];
+var posY = window.pageYOffset;
 
-var canvas = d3
-  .select('#canvas')
+var svg = d3
+  .select('#svg-1')
   .append('svg')
   .attr('width', '100%')
-  .attr('height', '100%')
+  .attr('height', '2500')
 
 var path = [
   [w/2-5, 200],
@@ -36,9 +36,9 @@ var path = [
   [w/2-50, 400],
   [w/2+50, 500],
   [w/2-50, 600],
-  [w/2, 400],
-  [w/2+300, 400],
-  [w/2+200, h],
+  [w/2, 550],
+  [w/2+300, 900],
+  [w/2+300, 5000],
 ];
 
 var bezierLine = d3
@@ -54,7 +54,7 @@ var bezierLine = d3
 var pageSizeY =  $('.content-container')[0].getBoundingClientRect().height;
 var progress = 0;
 
-var stroke = canvas.selectAll('liner')
+var stroke = svg.selectAll('liner')
   .data([posY])
   .enter()
   .append('path')
@@ -62,6 +62,7 @@ var stroke = canvas.selectAll('liner')
   .attr('stroke', '#FFFFFF')
   .attr('stroke-width', 10)
   .attr('fill', 'none')
+  .attr('stroke-linecap', 'round')
   .attr('stroke-dasharray', function(d) {
     var strokeLength = this.getTotalLength();
     progress = this.getTotalLength()-posY;
@@ -74,9 +75,11 @@ var stroke = canvas.selectAll('liner')
 var animatePath = function() {
   stroke
     .attr('stroke-dashoffset', function(d) {
-      progress = Math.min(progress, this.getTotalLength()-posY);
-      var progressWithLimit = Math.max(0, progress);
-      return progressWithLimit;
+      //var forwardOnlyProgress = Math.min(progress, this.getTotalLength()-posY);
+      //var progressWithLimit = Math.max(0, forwardOnlyProgress);
+      var catchUpFactor = 1.2;
+      var progress = this.getTotalLength()-posY*catchUpFactor;
+      return progress;
     });
 }
 
@@ -85,25 +88,25 @@ var testData = [{'id': 1}];
 
 var keyframes = [
   {
-    'position': 370,
+    'position': 300,
     'start': function() {
-      return canvas
+      return svg
         .selectAll('circle')
         .data(testData, function(d) { return d.id; })
         .enter()
           .append('circle')
-          .attr('r', 30)
+          .attr('r', 25) //30
           .attr('cx', w/2-15)
           .attr('cy', 570)
           .attr('fill', '#FFFFFF');
     },
     'end': function() {
-      return canvas
+      return svg
         .selectAll('circle')
         .data(testData, function(d) { return d.id; })
           .transition()
           .duration(300)
-          .attr('r', 25)
+          .attr('r', 20)
           .attrTween('fill', function() {
             return function(t) {
               return (d3.interpolateRgb('#FFFFFF', '#FF6666'))(t)
