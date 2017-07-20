@@ -21,14 +21,20 @@ gulp.task('sass', function() {
     .pipe(connect.reload());
 });
 
-gulp.task('watch', function() {
-  gulp.watch(['scss/**/*.scss'], ['sass']);
-})
+gulp.task('html', function () {
+  gulp.src('*.html')
+    .pipe(connect.reload());
+});
 
 gulp.task('serve', function() {
   connect.server({
     livereload: true
   });
 });
+
+gulp.task('watch', function() {
+  gulp.watch(['scss/**/*.scss'], ['sass']);
+  gulp.watch(['*.html'], ['html']);
+})
 
 gulp.task('default', ['sass', 'serve', 'watch']);
