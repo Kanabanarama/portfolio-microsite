@@ -87,152 +87,221 @@ var animatePath = function() {
     });
 }
 
-// Scroll bound sectional animations
-var keyframes = [
-  {
-    position: 636,
-    selector: '.test rect',
-    remove: false,
-    start: function() {
-      return svg
-        .append('g')
-        .attr('class', 'test')
-        .attr('transform', 'translate('+(w/2-300)+', 1400)')
-        .append('rect')
-        .attr('width', 600)
-        .attr('height', 50)
-        .attr('opacity', 1)
-        .attr('fill', '#FFFFFF');
-    },
-    end: function() {
-      return svg
-        .select('.test rect')
-        .transition()
-        .duration(2000)
-        .ease(d3.easeBounce)
-        .attrTween('transform', function() {
-          var i = d3.interpolate(0, 180);
-          return function(t) {
-            return 'rotate(' + i(t) + ', 300, 25)';
-          };
-        });
-    }
-  },
-  {
-    position: 636,
-    selector: '#icon-monitor',
-    remove: true,
-    start: function() {
-      return svg
-        .select('#icon-monitor')
-        .attr('transform', 'translate('+(w/2-300)+', 1330)');
-    },
-    end: function() {
-      return svg
-        .select('#icon-monitor')
-        .transition()
-        .duration(700)
-        .attr('transform', 'translate('+(w-85)+', 900)')
-        .ease(d3.easeQuadOut)
-        .transition()
-        .duration(2000)
-        .attr('transform', 'translate('+(w/2-300)+', 2500)')
-        .ease(d3.easeQuadInOut);
-    }
-  },
-  {
-    position: 636,
-    selector: '#icon-database',
-    remove: true,
-    start: function() {
-      return svg
-        .select('#icon-database')
-        .attr('transform', 'translate('+(w/2-100-20)+', 1330)');
-    },
-    end: function() {
-      return svg
-        .select('#icon-database')
-        .transition()
-        .duration(800)
-        .attr('transform', 'translate('+(w-85)+', 1000)')
-        .ease(d3.easeQuadOut)
-        .transition()
-        .duration(2000)
-        .attr('transform', 'translate('+(w/2-100)+', 2500)')
-        .ease(d3.easeQuadInOut);
-    }
-  },
-  {
-    position: 636,
-    selector: '#icon-cloud',
-    remove: true,
-    start: function() {
-      return svg
-        .select('#icon-cloud')
-        .attr('transform', 'translate('+(w/2+100-40)+', 1330)');
-    },
-    end: function() {
-      return svg
-        .select('#icon-cloud')
-        .transition()
-        .duration(2000)
-        .attr('transform', 'translate('+(w/2+300)+', 2500)')
-        .ease(d3.easeQuadInOut);
-    }
-  },
-  {
-    position: 636,
-    selector: '#icon-app',
-    remove: true,
-    start: function() {
-      return svg
-        .select('#icon-app')
-        .attr('transform', 'translate('+(w/2+300-80)+', 1330)');
-    },
-    end: function() {
-      return svg
-        .select('#icon-app')
-        .transition()
-        .duration(2000)
-        .attr('transform', 'translate('+(w/2+500)+', 2500)')
-        .ease(d3.easeQuadInOut);
-    }
-  }
-];
-
-var initSections = function() {
-  keyframes.forEach(function(keyframe) {
-    keyframe.start().attr('visibility', 'visible');
-    if(window.pageYOffset >= keyframe.position && !keyframe.status) {
-      var keyframeElement = svg
-        .select(keyframe.selector)
-        .interrupt()
-      if(keyframe.remove) {
-        keyframeElement.remove()
-      } else {
-        keyframe.end().duration(0).attr('data-animation-finished');
-      }
-      keyframe.status = 1;
-    }
-  });
-}
-
-var animateSections = function() {
-  keyframes.forEach(function(keyframe) {
-    if(window.pageYOffset >= keyframe.position && !keyframe.status) {
-      keyframe.end().attr('data-animation-finished');
-      keyframe.status = 1;
-    }
-  });
-}
-
-initSections();
-
 d3.select(window).on('scroll.scroller', function() {
   posY = window.pageYOffset;
   animatePath();
-  animateSections();
 });
+
+
+
+// animated svg sections
+function AnimatedSheet(svgSelector, options) {
+  var svgElement = $(svgSelector);
+  if(svgElement) {
+    this.svg = svgElement;
+  } else {
+    console.error('No svg found by selector "' + svgSelector + '"');
+  }
+
+  var d3Svg = d3.select(svgSelector);
+
+  d3Svg
+    .attr('width', (options.width) ? options.width : '100%')
+    .attr('height', (options.height) ? options.height : '100%');
+
+  this.init = function() {
+    var svgPosition =  svgElement.position().top;
+    var progress = window.pageYOffset - svgPosition + h;
+    options.keyframes.forEach(function(keyframe) {
+      keyframe.start(d3Svg).attr('visibility', 'visible');
+      if(progress >= keyframe.position && !keyframe.status) { // window.pageYOffset
+        var keyframeElement = svg
+          .select(keyframe.selector)
+          .interrupt()
+        if(keyframe.remove) {
+          keyframeElement.remove()
+        } else {
+          keyframe.end(d3Svg).duration(0).attr('data-animation-finished');
+        }
+        keyframe.status = 1;
+      }
+    });
+  }();
+
+  this.animate = function() {
+    $(window).scroll(function() {
+      var svgPosition =  svgElement.position().top;
+      var progress = window.pageYOffset - svgPosition + h;
+      options.keyframes.forEach(function(keyframe) {
+        if(progress >= keyframe.position && !keyframe.status) { // window.pageYOffset
+          var keyframeElement = keyframe.end(d3Svg).attr('data-animation-finished');
+          keyframe.status = 1;
+          if(keyframe.remove) {
+            keyframeElement.remove()
+          }
+        }
+      });
+    });
+  }();
+
+  this.destroy = function() {
+  }();
+
+  return this;
+}
+
+var sheet1 = new AnimatedSheet('#svg-1', {
+  width: '100%',
+  height: '2000',
+  keyframes: [
+    {
+      position: 1636,
+      selector: '.test rect',
+      remove: false,
+      start: function(svg) {
+        return svg
+          .append('g')
+          .attr('class', 'test')
+          .attr('transform', 'translate('+(w/2-300)+', 1400)')
+          .append('rect')
+          .attr('width', 600)
+          .attr('height', 50)
+          .attr('opacity', 1)
+          .attr('fill', '#FFFFFF');
+      },
+      end: function(svg) {
+        return svg
+          .select('.test rect')
+          .transition()
+          .duration(2000)
+          .ease(d3.easeBounce)
+          .attrTween('transform', function() {
+            var i = d3.interpolate(0, 180);
+            return function(t) {
+              return 'rotate(' + i(t) + ', 300, 25)';
+            };
+          });
+      }
+    },
+    {
+      position: 1636,
+      selector: '#icon-monitor',
+      remove: true,
+      start: function(svg) {
+        return svg
+          .select('#icon-monitor')
+          .attr('transform', 'translate(' + (w / 2 - 300) + ', 1330)');
+      },
+      end: function(svg) {
+        return svg
+          .select('#icon-monitor')
+          .transition()
+          .duration(700)
+          .attr('transform', 'translate(' + (w - 85) + ', 900)')
+          .ease(d3.easeQuadOut)
+          .transition()
+          .duration(2000)
+          .attr('transform', 'translate(' + (w / 2 - 300) + ', 2500)')
+          .ease(d3.easeQuadInOut);
+      }
+    },
+    {
+      position: 1636,
+      selector: '#icon-database',
+      remove: true,
+      start: function(svg) {
+        return svg
+          .select('#icon-database')
+          .attr('transform', 'translate(' + (w / 2 - 100 - 20) + ', 1330)');
+      },
+      end: function(svg) {
+        return svg
+          .select('#icon-database')
+          .transition()
+          .duration(800)
+          .attr('transform', 'translate(' + (w - 85) + ', 1000)')
+          .ease(d3.easeQuadOut)
+          .transition()
+          .duration(2000)
+          .attr('transform', 'translate(' + (w / 2 - 100) + ', 2500)')
+          .ease(d3.easeQuadInOut);
+      }
+    },
+    {
+      position: 1636,
+      selector: '#icon-cloud',
+      remove: true,
+      start: function(svg) {
+        return svg
+          .select('#icon-cloud')
+          .attr('transform', 'translate(' + (w / 2 + 100 - 40) + ', 1330)');
+      },
+      end: function(svg) {
+        return svg
+          .select('#icon-cloud')
+          .transition()
+          .duration(2000)
+          .attr('transform', 'translate(' + (w / 2 + 300) + ', 2500)')
+          .ease(d3.easeQuadInOut);
+      }
+    },
+    {
+      position: 1636,
+      selector: '#icon-app',
+      remove: true,
+      start: function(svg) {
+        return svg
+          .select('#icon-app')
+          .attr('transform', 'translate(' + (w / 2 + 300 - 80) + ', 1330)');
+      },
+      end: function(svg) {
+        return svg
+          .select('#icon-app')
+          .transition()
+          .duration(2000)
+          .attr('transform', 'translate(' + (w / 2 + 500) + ', 2500)')
+          .ease(d3.easeQuadInOut);
+      }
+    }
+  ]
+});
+
+var sheet2 = new AnimatedSheet('#svg-5', {
+  width: '100%',
+  height: '100%',
+  keyframes: [
+    {
+      position: 594,
+      selector: '.test2 circle',
+      remove: false,
+      start: function(svg) {
+        return svg
+          .append('g')
+          .attr('class', 'test2')
+          .append('circle')
+          .attr('r', 20)
+          .attr('cx', w/2-35)
+          .attr('cy', 222)
+          .attr('fill', '#FFFFFF');
+      },
+      end: function(svg) {
+        return svg
+          .select('.test2 circle')
+          .transition()
+          .duration(1000)
+          .attr('r', 10)
+          .attrTween('fill', function() {
+            return function(t) {
+              return (d3.interpolateRgb('#FFFFFF', '#FF6666'))(t)
+            };
+          })
+          .ease(d3.easeBounce);
+      }
+    }
+  ]
+});
+
+
 
 // Helper that shows x/y position of the cursor
 var initPositionHelper = function() {

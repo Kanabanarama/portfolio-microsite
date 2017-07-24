@@ -97,6 +97,28 @@ body {
   -o-background-size: cover;
   background-size: cover;
   width: 100%;
+  &.static {
+    height: 800px;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+
+    -webkit-filter: blur(7px);
+    -moz-filter: blur(7px);
+    -o-filter: blur(7px);
+    -ms-filter: blur(7px);
+    filter: blur(7px);
+  }
+  &.parallax-2 {
+    background: linear-gradient(to bottom, #a0d8ef 0%,#ddf1f9 50%,#feffff 100%) no-repeat center center fixed;
+  }
+  &.parallax-3 {
+    background: linear-gradient(to bottom, #a0d8ef 0%,#ddf1f9 50%,#feffff 100%) no-repeat center center fixed;
+  }
+  &.parallax-4 {
+    background: linear-gradient(to bottom, #a0d8ef 0%,#ddf1f9 50%,#feffff 100%) no-repeat center center fixed;
+  }
 }
 
 .startpoint {
