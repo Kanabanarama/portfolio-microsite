@@ -2,6 +2,8 @@ var gulp    = require('gulp');
 var $       = require('gulp-load-plugins')();
 var sass    = require('gulp-sass');
 var connect = require('gulp-connect');
+var jshint  = require('gulp-jshint');
+var stylish = require('jshint-stylish');
 
 var sassPaths = [
   'bower_components/foundation-sites/scss',
@@ -24,6 +26,12 @@ gulp.task('sass', function() {
 gulp.task('javascript', function () {
   gulp.src('js/**/*.js')
     .pipe(connect.reload());
+});
+
+gulp.task('lint', function() {
+  gulp.src(['js/**/*.js'])
+    .pipe(jshint())
+    .pipe(jshint.reporter(stylish))
 });
 
 gulp.task('html', function () {

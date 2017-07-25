@@ -8,7 +8,8 @@
     "gulp-autoprefixer": "^3.1.0",
     "gulp-connect": "^5.0.0",
     "gulp-load-plugins": "^1.1.0",
-    "gulp-sass": "^2.1.0"
+    "gulp-sass": "^2.1.0",
+    "jshint-stylish": "^2.2.1"
   },
   "scripts": {
     "start": "gulp",
@@ -26,6 +27,7 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "gulp-autoprefixer": "^3.1.0"
+    "gulp-autoprefixer": "^3.1.0",
+    "gulp-jshint": "^1.0.10"
   }
 }
