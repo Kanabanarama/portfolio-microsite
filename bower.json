@@ -9,7 +9,7 @@
   "license": "MIT",
   "homepage": "",
   "dependencies": {
-    "foundation-sites": "~6.2.0",
+    "foundation-sites": "~6.2.4",
     "motion-ui": "~1.2.2",
     "d3": "~4.10"
   },
