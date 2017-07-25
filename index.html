@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
     <title>My Portfolio</title>
     <link rel="stylesheet" href="css/app.css">
     <link rel="stylesheet" href="vendor/webicons/webicons.css" />
@@ -12,22 +12,10 @@
   <body>
 
     <!-- NAVIGATION -->
-    <div class="top-bar" id="topBarNavigationMenu">
-      <div class="top-bar-left">
-        <ul class="dropdown menu" data-dropdown-menu>
-          <li><img src="http://placehold.it/32x32" width="32" height="32"></li>
-          <li class="menu-text">Gimme a name</li>
-          <li><a href="#start">START</a></li>
-          <li><a href="#offer">Offer</a></li>
-          <li><a href="#portfolio">Portfolio</a></li>
-          <li><a href="#reviews">Reviews</a></li>
-        </ul>
-      </div>
-      <div class="top-bar-right">
-        <ul class="menu float-left">
-          <li><a href="#aboutme">About me</a></li>
-          <li><a href="#contact">Contact</a></li>
-        </ul>
+    <div class="sticky" data-sticky-container>
+      <div class="title-bar" data-sticky data-options="marginTop:0;" data-responsive-toggle="topBarNavigationMenu" data-hide-for="medium">
+        <button class="menu-icon" type="button" data-toggle="topBarNavigationMenu"></button>
+        <div class="title-bar-title">Menu</div>
         <ul class="webicons menu float-right">
           <li><a href="#" class="webicon linkedin">linkedin</a></li>
           <li><a href="#" class="webicon xing">xing</a></li>
@@ -35,6 +23,29 @@
           <li><a href="#" class="webicon github">github</a></li>
           <li><a href="#" class="webicon stackoverflow">stackoverflow</a></li>
         </ul>
+      </div>
+      <div class="top-bar" id="topBarNavigationMenu">
+        <div class="top-bar-left">
+          <ul class="dropdown menu" data-dropdown-menu>
+            <li><a href="#start">START</a></li>
+            <li><a href="#offer">Offer</a></li>
+            <li><a href="#portfolio">Portfolio</a></li>
+            <li><a href="#reviews">Reviews</a></li>
+          </ul>
+        </div>
+        <div class="top-bar-right">
+          <ul class="menu float-left">
+            <li><a href="#aboutme">About me</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+          <ul class="webicons menu float-right show-for-large">
+            <li><a href="#" class="webicon linkedin">linkedin</a></li>
+            <li><a href="#" class="webicon xing">xing</a></li>
+            <li><a href="#" class="webicon twitter">twitter</a></li>
+            <li><a href="#" class="webicon github">github</a></li>
+            <li><a href="#" class="webicon stackoverflow">stackoverflow</a></li>
+          </ul>
+        </div>
       </div>
     </div>
     <!-- /NAVIGATION -->

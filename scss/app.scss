@@ -73,11 +73,35 @@ body {
   font-size: 20px;
 }
 
-.top-bar {
-  position: fixed;
-  top : 0;
-  z-index: 9000;
+.title-bar {
+  z-index: 9001;
   width: 100%;
+}
+.top-bar {
+  z-index: 9001;
+  width: 100%;
+}
+
+.sticky {
+  width: 100%;
+  z-index: 9001;
+  position:fixed;
+  // fixed elements android fix:
+  -webkit-backface-visibility: hidden;
+}
+
+.no-js {
+  @include breakpoint(small only) {
+    .top-bar {
+      display: none;
+    }
+  }
+
+  @include breakpoint(medium) {
+    .title-bar {
+      display: none;
+    }
+  }
 }
 
 /* wrapper */
@@ -125,7 +149,9 @@ body {
   font-size: 50px;
   color: #fff;
   text-align: center;
-  margin-top: 58px;
+  position: absolute;
+  top: 58px;
+  width: 100%;
 }
 
 #svg-1 {
