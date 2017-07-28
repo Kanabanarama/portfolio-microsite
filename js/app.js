@@ -114,7 +114,6 @@ function AnimatedSheet(svgSelector, options) {
 
   this.init = function() {
     options.keyframes.forEach(function(keyframe, scopeIndex) {
-      //console.log('___', keyframe, keyframe.create(d3Svg));
       var createScope = keyframe.create(d3Svg);
       if(createScope.element) {
         createScope.element.attr('visibility', 'visible');
@@ -212,36 +211,13 @@ var sheet1 = new AnimatedSheet('#svg-1', {
       }
     },
     {
-      position: 1627,
-      remove: true,
-      create: function(svg) {
-        this.element = svg
-          .select('#icon-database')
-          .attr('transform', 'translate(' + (w / 2 - 100 - 20) + ', 1330)');
-
-        return this;
-      },
-      animate: function(svg) {
-        return svg
-          .select('#icon-database')
-          .transition()
-          .duration(800)
-          .attr('transform', 'translate(' + (w - 85) + ', 1000)')
-          .ease(d3.easeQuadOut)
-          .transition()
-          .duration(2000)
-          .attr('transform', 'translate(' + (w / 2 - 100) + ', 2500)')
-          .ease(d3.easeQuadInOut);
-      }
-    },
-    {
       from: 1627,
-      to: 2240,
+      to: 2140,
       remove: true,
       create: function(svg) {
         this.trajectoryPoints = [
           [w/2-260, 1365],
-          [w-30, 1100],
+          [w-50, 1000],
           [w/2-300, 2500]
         ];
         this.trailcurve = d3
@@ -252,15 +228,7 @@ var sheet1 = new AnimatedSheet('#svg-1', {
           .enter()
           .append('path')
           .attr('d', this.trailcurve(this.trajectoryPoints))
-          .attr('stroke', 'orange')
-          .attr('stroke-width', 3)
           .attr('fill', 'none');
-        this.points = svg
-          .selectAll('.point')
-          .data(this.trajectoryPoints)
-          .enter().append('circle')
-            .attr('r', 5)
-            .attr('transform', function(d) { return 'translate(' + d + ')'; });
         this.element = svg
           .select('#icon-monitor');
 
@@ -272,19 +240,63 @@ var sheet1 = new AnimatedSheet('#svg-1', {
           var p = path.getPointAtLength(percent * l);
           return 'translate(' + (p.x-40) + ', ' + (p.y-36) + ')';
         }
+        var rotation = d3.interpolateNumber(0, 360);
 
         return createScope
           .element
-          .attr('transform', translateAlong(createScope.trajectory.node(), interpolatePercent));
+          .attr('transform',
+            translateAlong(createScope.trajectory.node(), interpolatePercent) +
+            'rotate('+rotation(interpolatePercent)+', 30, 25)'
+          );
       }
     },
     {
-      position: 1636,
+      from: 1627,
+      to: 2240,
+      remove: true,
+      create: function(svg) {
+        this.trajectoryPoints = [
+          [w/2-80, 1365],
+          [w-55, 1100],
+          [w/2-300, 2500]
+        ];
+        this.trailcurve = d3
+          .line()
+          .curve(d3.curveCatmullRom);
+        this.trajectory = svg.selectAll('line')
+          .data(this.trajectoryPoints)
+          .enter()
+          .append('path')
+          .attr('d', this.trailcurve(this.trajectoryPoints))
+          .attr('fill', 'none');
+        this.element = svg
+          .select('#icon-database');
+
+        return this;
+      },
+      interpolate: function(svg, createScope, interpolatePercent) {
+        function translateAlong(path, percent) {
+          var l = path.getTotalLength();
+          var p = path.getPointAtLength(percent * l);
+          return 'translate(' + (p.x-40) + ', ' + (p.y-36) + ')';
+        }
+        var rotation = d3.interpolateNumber(0, 360);
+
+        return createScope
+          .element
+          .attr('transform',
+            translateAlong(createScope.trajectory.node(), interpolatePercent) +
+            'rotate('+rotation(interpolatePercent)+', 30, 25)'
+          );
+      }
+    },
+    {
+      from: 1627,
+      to: 2240,
       remove: true,
       create: function(svg) {
         this.element = svg
           .select('#icon-cloud')
-          .attr('transform', 'translate(' + (w / 2 + 100 - 40) + ', 1330)');
 
         return this;
       },
@@ -295,6 +307,21 @@ var sheet1 = new AnimatedSheet('#svg-1', {
           .duration(2000)
           .attr('transform', 'translate(' + (w / 2 + 300) + ', 2500)')
           .ease(d3.easeQuadInOut);
+      },
+      interpolate: function(svg, createScope, interpolatePercent) {
+        var arc = d3.interpolateObject(
+          { x: (w / 2 + 100 - 40),
+            y: 1333
+          },
+          {
+            x: (w - 600),
+            y: 2500
+          }
+        );
+        var pos = arc(interpolatePercent);
+        return svg
+          .select('#icon-cloud')
+          .attr('transform', 'translate('+ pos.x + ', ' + pos.y + ')');
       }
     },
     {
@@ -304,14 +331,13 @@ var sheet1 = new AnimatedSheet('#svg-1', {
       create: function(svg) {
         this.element = svg
           .select('#icon-app')
-          .attr('transform', 'translate(' + (w / 2 + 300 - 80) + ', 1330)');
 
         return this;
       },
       interpolate: function(svg, createScope, interpolatePercent) {
         var arc = d3.interpolateObject(
-          { x: (w / 2 + 300 - 80),
-            y: 1330
+          { x: (w / 2 + 300 - 70),
+            y: 1325
           },
           {
             x: (w - 300),
