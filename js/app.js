@@ -110,16 +110,25 @@ function AnimatedSheet(svgSelector, options) {
     .attr('width', (options.width) ? options.width : '100%')
     .attr('height', (options.height) ? options.height : '100%');
 
+  var scopes = [];
+
   this.init = function() {
-    options.keyframes.forEach(function(keyframe) {
-      keyframe.create(d3Svg).attr('visibility', 'visible');
+    options.keyframes.forEach(function(keyframe, scopeIndex) {
+      //console.log('___', keyframe, keyframe.create(d3Svg));
+      var createScope = keyframe.create(d3Svg);
+      if(createScope.element) {
+        createScope.element.attr('visibility', 'visible');
+      } else {
+        console.warn('The create function should return the element key, so it can be accessed in the animate/interpolate function via the "createScope" parameter')
+      }
+      scopes[scopeIndex] = createScope
     });
   }();
 
   this.animate = function() {
     var svgPosition =  svgElement.position().top;
     var progress = window.pageYOffset - svgPosition + h;
-    options.keyframes.forEach(function(keyframe) {
+    options.keyframes.forEach(function(keyframe, scopeIndex) {
       if(keyframe.interpolate) {
         var percent = 0;
 
@@ -144,13 +153,13 @@ function AnimatedSheet(svgSelector, options) {
         }
 
         //console.log('from', keyframe.from, 'to', keyframe.to, 'progress', progress, 'percent', percent);
-        keyframe.interpolate(d3Svg, percent);
+        keyframe.interpolate(d3Svg, scopes[scopeIndex], percent);
 
       } else {
 
         //console.log('position', keyframe.position, 'progress', progress, 'remove', keyframe.remove);
         if(progress >= keyframe.position && !keyframe.running) {
-          var animatedElement = keyframe.animate(d3Svg);
+          var animatedElement = keyframe.animate(d3Svg, scopes[scopeIndex]);
           if(keyframe.remove) {
             animatedElement.on('end', function() {
               this.remove();
@@ -183,20 +192,22 @@ var sheet1 = new AnimatedSheet('#svg-1', {
       to: 2023,
       remove: false,
       create: function(svg) {
-        return svg
+        this.element = svg
           .append('g')
-          .attr('class', 'test')
+          .attr('class', 'bar')
           .attr('transform', 'translate('+(w/2-300)+', 1400)')
           .append('rect')
           .attr('width', 600)
           .attr('height', 50)
           .attr('opacity', 1)
           .attr('fill', '#FFFFFF');
+
+        return this;
       },
-      interpolate: function(svg, interpolatePercent) {
+      interpolate: function(svg, createScope, interpolatePercent) {
         var rotation = d3.interpolateNumber(0, 90);
         return svg
-            .select('.test rect')
+            .select('.bar rect')
             .attr('transform', 'rotate('+rotation(AnimatedSheet.easeOutElastic(interpolatePercent))+', 300, 25)');
       }
     },
@@ -204,30 +215,11 @@ var sheet1 = new AnimatedSheet('#svg-1', {
       position: 1627,
       remove: true,
       create: function(svg) {
-        return svg
-          .select('#icon-monitor')
-          .attr('transform', 'translate(' + (w / 2 - 300) + ', 1330)');
-      },
-      animate: function(svg) {
-        return svg
-          .select('#icon-monitor')
-          .transition()
-          .duration(700)
-          .attr('transform', 'translate(' + (w - 85) + ', 900)')
-          .ease(d3.easeQuadOut)
-          .transition()
-          .duration(2000)
-          .attr('transform', 'translate(' + (w / 2 - 300) + ', 2500)')
-          .ease(d3.easeQuadInOut);
-      }
-    },
-    {
-      position: 1636,
-      remove: true,
-      create: function(svg) {
-        return svg
+        this.element = svg
           .select('#icon-database')
           .attr('transform', 'translate(' + (w / 2 - 100 - 20) + ', 1330)');
+
+        return this;
       },
       animate: function(svg) {
         return svg
@@ -243,12 +235,58 @@ var sheet1 = new AnimatedSheet('#svg-1', {
       }
     },
     {
+      from: 1627,
+      to: 2240,
+      remove: true,
+      create: function(svg) {
+        this.trajectoryPoints = [
+          [w/2-260, 1365],
+          [w-30, 1100],
+          [w/2-300, 2500]
+        ];
+        this.trailcurve = d3
+          .line()
+          .curve(d3.curveCatmullRom);
+        this.trajectory = svg.selectAll('line')
+          .data(this.trajectoryPoints)
+          .enter()
+          .append('path')
+          .attr('d', this.trailcurve(this.trajectoryPoints))
+          .attr('stroke', 'orange')
+          .attr('stroke-width', 3)
+          .attr('fill', 'none');
+        this.points = svg
+          .selectAll('.point')
+          .data(this.trajectoryPoints)
+          .enter().append('circle')
+            .attr('r', 5)
+            .attr('transform', function(d) { return 'translate(' + d + ')'; });
+        this.element = svg
+          .select('#icon-monitor');
+
+        return this;
+      },
+      interpolate: function(svg, createScope, interpolatePercent) {
+        function translateAlong(path, percent) {
+          var l = path.getTotalLength();
+          var p = path.getPointAtLength(percent * l);
+          return 'translate(' + (p.x-40) + ', ' + (p.y-36) + ')';
+        }
+
+        return createScope
+          .element
+          .attr('transform', translateAlong(createScope.trajectory.node(), interpolatePercent));
+      }
+    },
+    {
       position: 1636,
       remove: true,
       create: function(svg) {
-        return svg
+        this.element = svg
           .select('#icon-cloud')
           .attr('transform', 'translate(' + (w / 2 + 100 - 40) + ', 1330)');
+
+        return this;
       },
       animate: function(svg) {
         return svg
@@ -260,20 +298,30 @@ var sheet1 = new AnimatedSheet('#svg-1', {
       }
     },
     {
-      position: 1636,
+      from: 1627,
+      to: 2240,
       remove: true,
       create: function(svg) {
-        return svg
+        this.element = svg
           .select('#icon-app')
           .attr('transform', 'translate(' + (w / 2 + 300 - 80) + ', 1330)');
+
+        return this;
       },
-      animate: function(svg) {
+      interpolate: function(svg, createScope, interpolatePercent) {
+        var arc = d3.interpolateObject(
+          { x: (w / 2 + 300 - 80),
+            y: 1330
+          },
+          {
+            x: (w - 300),
+            y: 2500
+          }
+        );
+        var pos = arc(interpolatePercent);
         return svg
           .select('#icon-app')
-          .transition()
-          .duration(2000)
-          .attr('transform', 'translate(' + (w / 2 + 500) + ', 2500)')
-          .ease(d3.easeQuadInOut);
+          .attr('transform', 'translate('+ pos.x + ', ' + pos.y + ')');
       }
     }
   ]
