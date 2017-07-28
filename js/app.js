@@ -300,14 +300,6 @@ var sheet1 = new AnimatedSheet('#svg-1', {
 
         return this;
       },
-      animate: function(svg) {
-        return svg
-          .select('#icon-cloud')
-          .transition()
-          .duration(2000)
-          .attr('transform', 'translate(' + (w / 2 + 300) + ', 2500)')
-          .ease(d3.easeQuadInOut);
-      },
       interpolate: function(svg, createScope, interpolatePercent) {
         var arc = d3.interpolateObject(
           { x: (w / 2 + 100 - 40),
