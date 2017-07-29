@@ -20,14 +20,13 @@ function CssAnimations() {
 window.addEventListener('scroll', CssAnimations);
 
 // Scroll bound line animation
-var w = window.innerWidth;
-var h = window.innerHeight;
+// TODO: replace fixed values for other resolutions
+var w = 1920;//window.innerWidth;
+var h = 1080;//window.innerHeight;
 var posY = window.pageYOffset;
 
 var svg = d3
-  .select('#svg-1')
-  .attr('width', '100%')
-  .attr('height', '2000');
+  .select('#svg-1');
 
 var path = [
   [w/2-5, 200],
@@ -81,8 +80,11 @@ var animatePath = function() {
     .attr('stroke-dashoffset', function() {
       //var forwardOnlyProgress = Math.min(progress, this.getTotalLength()-posY);
       //var progressWithLimit = Math.max(0, forwardOnlyProgress);
-      var catchUpFactor = 5;
-      var progress = this.getTotalLength()-posY*catchUpFactor;
+      var lineSpeed = 5;
+      if(Foundation.MediaQuery.current === 'small') {
+        lineSpeed = 15;
+      }
+      var progress = this.getTotalLength()-posY*lineSpeed;
       return progress;
     });
 }
@@ -104,11 +106,35 @@ function AnimatedSheet(svgSelector, options) {
     console.error('No svg found by selector "' + svgSelector + '"');
   }
 
-  var d3Svg = d3.select(svgSelector);
+  var d3Svg = d3
+    .select(svgSelector)
+    .attr('width', (options.width) ? options.width : '100%');
 
-  d3Svg
-    .attr('width', (options.width) ? options.width : '100%')
-    .attr('height', (options.height) ? options.height : '100%');
+  var resizeBreakpointsToMedia = function(x, y) {
+    var factor = 1;
+    if(Foundation.MediaQuery.current === 'small') {
+      factor = 0.75;
+    }
+    coord = {
+      x: x * factor,
+      y: y * factor
+    }
+
+    return coord;
+  }
+
+  // resize viewbox on small displays
+  var reformatViewbox = function() {
+    if(Foundation.MediaQuery.current === 'small') {
+      d3Svg
+        .attr('height', 732)
+        .attr('viewBox', '0 540 1920 712');
+    } else {
+      d3Svg
+        .attr('height', 2000)
+        .attr('viewBox', null);
+    }
+  }
 
   var scopes = [];
 
@@ -122,40 +148,36 @@ function AnimatedSheet(svgSelector, options) {
       }
       scopes[scopeIndex] = createScope
     });
+    reformatViewbox();
+    window.addEventListener('resize', reformatViewbox);
   }();
 
   this.animate = function() {
     var svgPosition =  svgElement.position().top;
     var progress = window.pageYOffset - svgPosition + h;
     options.keyframes.forEach(function(keyframe, scopeIndex) {
+      var from = resizeBreakpointsToMedia(0, keyframe.from).y;
+      var to = resizeBreakpointsToMedia(0, keyframe.to).y;
       if(keyframe.interpolate) {
         var percent = 0;
-
         // start default value
-        if(progress < keyframe.from) {
+        if(progress < from) {
           percent = 0;
         }
-
         // all values inbetween
-        if(progress >= keyframe.from && progress <= keyframe.to) {
-          var from = keyframe.from;
-          var to = keyframe.to;
+        if(progress >= from && progress <= to) {
           var totalLength = to - from;
           var progressFromStart = progress - from;
           var openPercent = (progressFromStart * 100) / totalLength;
           percent = Math.min(Math.max(0, openPercent), 100) / 100;
         }
-
         // end default value
-        if(progress > keyframe.to) {
+        if(progress > to) {
           percent = 100;
         }
-
-        //console.log('from', keyframe.from, 'to', keyframe.to, 'progress', progress, 'percent', percent);
+        //console.log('from', from, 'to', to, 'progress', progress, 'percent', percent);
         keyframe.interpolate(d3Svg, scopes[scopeIndex], percent);
-
       } else {
-
         //console.log('position', keyframe.position, 'progress', progress, 'remove', keyframe.remove);
         if(progress >= keyframe.position && !keyframe.running) {
           var animatedElement = keyframe.animate(d3Svg, scopes[scopeIndex]);
@@ -166,7 +188,6 @@ function AnimatedSheet(svgSelector, options) {
           }
           keyframe.running = true;
         }
-
       }
     });
   };
@@ -183,8 +204,6 @@ AnimatedSheet.easeOutElastic = function(t) {
 }
 
 var sheet1 = new AnimatedSheet('#svg-1', {
-  width: '100%',
-  height: '2000',
   keyframes: [
     {
       from: 1627,
