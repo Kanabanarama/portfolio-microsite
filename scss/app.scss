@@ -265,3 +265,15 @@ body {
   animation: floating 2s linear infinite;
   color: #0080A0;
 }
+
+.tool-badge {
+  @include label;
+  background-color: #a0d3e8;
+  border-radius: 5px;
+}
+
+.callout {
+  p {
+    font-size: 0.8em;
+  }
+}
