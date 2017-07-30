@@ -10,13 +10,14 @@ function CssAnimations() {
       var viewportTop = $(scrollElem).scrollTop();
       var viewportBottom = viewportTop + $(window).height();
       var elementTop = Math.round($(element).offset().top);
-      if(elementTop +100 < viewportBottom) {
+      if(elementTop +300 < viewportBottom) {
         $(element).addClass('animate-popup')
       }
     }
   });
 }
 
+// TODO: register at end of animation, so that the icons cannot appear if the animation has not yet finished
 window.addEventListener('scroll', CssAnimations);
 
 // Scroll bound line animation
@@ -80,11 +81,15 @@ var animatePath = function() {
     .attr('stroke-dashoffset', function() {
       //var forwardOnlyProgress = Math.min(progress, this.getTotalLength()-posY);
       //var progressWithLimit = Math.max(0, forwardOnlyProgress);
-      var lineSpeed = 5;
+      var lineSpeed = 4;
+      if(Foundation.MediaQuery.current === 'medium') {
+        lineSpeed = 9;
+      }
       if(Foundation.MediaQuery.current === 'small') {
-        lineSpeed = 15;
+        lineSpeed = 20;
       }
       var progress = this.getTotalLength()-posY*lineSpeed;
+
       return progress;
     });
 }
@@ -111,9 +116,12 @@ function AnimatedSheet(svgSelector, options) {
     .attr('width', (options.width) ? options.width : '100%');
 
   var resizeBreakpointsToMedia = function(x, y) {
-    var factor = 1;
+    var factor = 1.115;
+    if(Foundation.MediaQuery.current === 'medium') {
+      factor = 0.84;
+    }
     if(Foundation.MediaQuery.current === 'small') {
-      factor = 0.75;
+      factor = 0.72;
     }
     coord = {
       x: x * factor,
@@ -125,14 +133,25 @@ function AnimatedSheet(svgSelector, options) {
 
   // resize viewbox on small displays
   var reformatViewbox = function() {
+    var screenWidth = 1920;
+    var screenHeight = 2000;
+    var positionShiftX = 0;
+    var positionShiftY = -(1/(window.innerWidth))*100*100*25;
+    var viewboxValue = positionShiftX+' '+positionShiftY+' '+screenWidth+' '+screenHeight;
+
+    //console.log('reformat', viewboxValue);
+    d3Svg
+      .attr('height', 2000)
+      .attr('viewBox', viewboxValue)
+      .attr('preserveAspectRatio', 'xMinYMin meet');
+
+    if(Foundation.MediaQuery.current === 'medium') {
+      d3Svg
+        .attr('height', 1400)
+    }
     if(Foundation.MediaQuery.current === 'small') {
       d3Svg
-        .attr('height', 732)
-        .attr('viewBox', '0 540 1920 712');
-    } else {
-      d3Svg
-        .attr('height', 2000)
-        .attr('viewBox', null);
+        .attr('height', 800)
     }
   }
 
@@ -237,7 +256,7 @@ var sheet1 = new AnimatedSheet('#svg-1', {
         this.trajectoryPoints = [
           [w/2-260, 1365],
           [w-50, 1000],
-          [w/2-300, 2500]
+          [w/2-300, 3200]
         ];
         this.trailcurve = d3
           .line()
@@ -277,7 +296,7 @@ var sheet1 = new AnimatedSheet('#svg-1', {
         this.trajectoryPoints = [
           [w/2-80, 1365],
           [w-55, 1100],
-          [w/2-300, 2500]
+          [w/2-300, 3000]
         ];
         this.trailcurve = d3
           .line()
@@ -326,7 +345,7 @@ var sheet1 = new AnimatedSheet('#svg-1', {
           },
           {
             x: (w - 600),
-            y: 2500
+            y: 3000
           }
         );
         var pos = arc(interpolatePercent);
@@ -352,7 +371,7 @@ var sheet1 = new AnimatedSheet('#svg-1', {
           },
           {
             x: (w - 300),
-            y: 2500
+            y: 3200
           }
         );
         var pos = arc(interpolatePercent);
@@ -408,4 +427,4 @@ var initPositionHelper = function() {
   });
 }
 
-initPositionHelper();
+//initPositionHelper();

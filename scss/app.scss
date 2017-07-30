@@ -114,13 +114,16 @@ body {
 
 .parallax-background {
   background-color: #0080A0;
-  height: 2000px;
   background-repeat: no-repeat;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
   width: 100%;
+  height: 2000px;
+  @include breakpoint(medium only) {
+    height: 1024px;
+  }
   @include breakpoint(small only) {
     height: 732px;
   }
@@ -155,9 +158,11 @@ body {
   position: absolute;
   top: 58px;
   width: 100%;
+  @include breakpoint(medium only) {
+    font-size: 40px;
+  }
   @include breakpoint(small only) {
     font-size: 30px;
-    top: 108px;
   }
 }
 
@@ -168,29 +173,37 @@ body {
 
 .parallax-foreground {
   max-width: 100%;
-  min-height: 33%;
-  padding: 50px;
+  padding: 30px;
   font-size: 20px;
   background-color: #fff;
 }
 
 .parallax-foreground.hero {
   position: absolute;
-  top: 430px;
-  left: 50px;
   background: transparent;
+  top: 30.6vw; //calc(50% - 20vw);
+  left: 3.8vw;
+  @include breakpoint(medium only) {
+    top: 39vw;
+    left: 1.5vw;
+  }
   @include breakpoint(small only) {
-    top: 250px;
+    top: 54vw;
     left: 0;
-    h1 {
-      font-size: 1rem;
-    }
-    h4 {
-      font-size: 0.8rem;
-    }
-    h5 {
-      font-size: 0.7rem;
-    }
+  }
+
+  h1 {
+    font-size: 2.5vw;
+  }
+  h4 {
+    font-size: 1.3vw;
+  }
+  h5 {
+    font-size: 1.1vw;
+  }
+
+  .button-group {
+    margin-bottom: 0;
   }
 }
 
