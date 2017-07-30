@@ -176,14 +176,12 @@ body {
 
 .parallax-foreground.hero {
   position: absolute;
-  top: 150px;
+  top: 430px;
   left: 50px;
   background: transparent;
-  padding-top: 330px;
   @include breakpoint(small only) {
-    top: 50px;
+    top: 250px;
     left: 0;
-    padding-top: 250px;
     h1 {
       font-size: 1rem;
     }
