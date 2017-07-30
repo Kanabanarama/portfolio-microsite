@@ -1,12 +1,13 @@
 $(document).foundation();
 
-// CSS Animations
-function CssAnimations() {
+// CSS Icon Animations
+function PopupIcons() {
   var animatedElements = $('.animated:visible');
   var scrollElem = ((navigator.userAgent.toLowerCase().indexOf('webkit') != -1) ? 'body' : 'html');
   animatedElements.each(function(index, element) {
     // Popup animation triggered when icon is scrolled into view
-    if($(element).attr('class').indexOf('animate-view-popup') !== -1) {
+    if($(element).attr('class').indexOf('animate-popup') === -1
+      && $(element).attr('class').indexOf('animate-view-popup') !== -1) {
       var viewportTop = $(scrollElem).scrollTop();
       var viewportBottom = viewportTop + $(window).height();
       var elementTop = Math.round($(element).offset().top);
@@ -17,13 +18,13 @@ function CssAnimations() {
   });
 }
 
-// TODO: register at end of animation, so that the icons cannot appear if the animation has not yet finished
-window.addEventListener('scroll', CssAnimations);
+window.addEventListener('pathEnd', PopupIcons);
+
+
 
 // Scroll bound line animation
-// TODO: replace fixed values for other resolutions
-var w = 1920;//window.innerWidth;
-var h = 1080;//window.innerHeight;
+var w = 1920; // resolution the viewbox scaling is based on
+var h = 1080;
 var posY = window.pageYOffset;
 
 var svg = d3
@@ -55,10 +56,9 @@ var bezierLine = d3
   })
   .curve(d3.curveBasis);
 
-var pageSizeY =  $('.content-container')[0].getBoundingClientRect().height;
 var progress = 0;
 
-var stroke = svg.selectAll('liner')
+var stroke = svg.selectAll('line')
   .data([posY])
   .enter()
   .append('path')
@@ -89,6 +89,12 @@ var animatePath = function() {
         lineSpeed = 20;
       }
       var progress = this.getTotalLength()-posY*lineSpeed;
+
+      // event when path has reached its full length
+      if(progress < 0) {
+        var endEvent = new Event('pathEnd');
+        window.dispatchEvent(endEvent);
+      }
 
       return progress;
     });
