@@ -2,6 +2,12 @@
 module.exports = class AnimatedSheet {
 
     constructor(svgSelector, options) {
+        d3.selection.prototype.moveToFront = function() {
+          return this.each(function(){
+            this.parentNode.appendChild(this);
+          });
+        };
+
         this.svgElement = $(svgSelector);
         //if(this.svgElement) {
         //    this.svg = svgElement;
@@ -83,7 +89,7 @@ module.exports = class AnimatedSheet {
                 }
                 // end default value
                 if(progress > to) {
-                    percent = 100;
+                    percent = 1;
                 }
                 //console.log('from', from, 'to', to, 'progress', progress, 'percent', percent);
                 keyframe.interpolate(self.d3Svg, self.scopes[scopeIndex], percent);
@@ -105,7 +111,6 @@ module.exports = class AnimatedSheet {
     destroy() {
     };
 
-
     resizeBreakpointsToMedia(x, y) {
         let factor = 1.115;
         if(Foundation.MediaQuery.current === 'medium') {
@@ -120,6 +125,8 @@ module.exports = class AnimatedSheet {
             y: y * factor
         };
     };
+
+
 
     static easeOutElastic(t) {
         let p = 0.4;
