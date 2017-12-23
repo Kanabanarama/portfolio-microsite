@@ -12,8 +12,9 @@ module.exports = class AnimatedSheet {
         //if(this.svgElement) {
         //    this.svg = svgElement;
         //} else {
-        if(!this.svgElement) {
+        if(!this.svgElement.length) {
             console.error('No svg found by selector "' + svgSelector + '"');
+            return false;
         }
 
         this.d3Svg = d3
@@ -47,6 +48,14 @@ module.exports = class AnimatedSheet {
         };
 
         this.scopes = [];
+
+        if(options.defs) {
+            options.defs.forEach(function(def, index) {
+                if(def.filter) {
+                    def.filter(self.d3Svg);
+                }
+            });
+        }
 
         //this.init = function() {
             options.keyframes.forEach(function(keyframe, scopeIndex) {

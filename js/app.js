@@ -5,6 +5,7 @@ var animatedSheet = require('./animated-sheet');
 
 var firstAnimation = require('./animation-1');
 var secondAnimation = require('./animation-2');
+var thirdAnimation = require('./animation-3');
 
 $(document).foundation();
 
@@ -27,12 +28,14 @@ var icons1 = new popupIcons();
 
 var sheet1 = firstAnimation;
 var sheet2 = secondAnimation;
+var sheet3 = thirdAnimation;
 
 d3.select(window).on('scroll.scroller', function() {
     path1.animate();
     icons1.animate();
     sheet1.animate();
     sheet2.animate();
+    sheet3.animate();
 });
 
 var helper = new positionHelper().show();
