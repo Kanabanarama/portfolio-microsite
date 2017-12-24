@@ -1,3 +1,6 @@
+//import 'foundation-sites/js/foundation.core';
+//import 'foundation-sites/js/foundation.util.mediaQuery';
+
 // Animated svg sections
 module.exports = class AnimatedSheet {
 
@@ -23,28 +26,38 @@ module.exports = class AnimatedSheet {
 
         let self = this;
 
+        //Foundation.MediaQuery._init();
+
         // resize viewbox on small displays
         let reformatViewbox = function() {
-            let screenWidth = 1920;
-            let screenHeight = 2000;
+            let sheetWidth = 1920;
+            let sheetHeight = 1080;
             let positionShiftX = 0;
             let positionShiftY = -(1/(window.innerWidth))*100*100*25;
-            let viewboxValue = positionShiftX+' '+positionShiftY+' '+screenWidth+' '+screenHeight;
+            let viewboxValue = positionShiftX+' '+positionShiftY+' '+sheetWidth+' '+sheetHeight;
+            // FIXME: viewbox should vertically touch
+            viewboxValue = "0 -150 1920 2000";
 
-            //console.log('reformat', viewboxValue);
+            let small = 640;
+            let medium = 1024;
+
             self.d3Svg
                 .attr('height', 2000)
                 .attr('viewBox', viewboxValue)
                 .attr('preserveAspectRatio', 'xMinYMin meet');
 
-            if(Foundation.MediaQuery.current === 'medium') {
+            // FIXME: empty when using webpack (https://github.com/zurb/foundation-sites/issues/10363):
+            //if(Foundation.MediaQuery.current === 'small') {
+            if(window.innerWidth <= small) {
                 self.d3Svg
-                    .attr('height', 1400)
-            }
-            if(Foundation.MediaQuery.current === 'small') {
+                    .attr('height', 667)
+            } else
+            //if(Foundation.MediaQuery.current === 'medium') {
+            if(window.innerWidth <= medium) {
                 self.d3Svg
-                    .attr('height', 800)
+                    .attr('height', 1024)
             }
+
         };
 
         this.scopes = [];

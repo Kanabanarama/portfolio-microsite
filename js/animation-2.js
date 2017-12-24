@@ -9,14 +9,13 @@ module.exports = new AnimatedSheet('#svg-2', {
             remove: false,
             create: function(svg) {
                 let w = 1920; // resolution the viewbox scaling is based on
-                let h = 1080;
                 let path = [
                     [w/2+800, -150],
                     [w/2+800, 600],
                     [w/2+100, 600],
                     [w/2-280, 980],
                     [w/2-500, 1200],
-                    [w/2-500, 2000]
+                    [w/2-500, 2150]
                 ];
                 let bezierLine = d3
                     .line()
@@ -37,7 +36,7 @@ module.exports = new AnimatedSheet('#svg-2', {
                     .attr('stroke', '#FFFFFF')
                     .attr('stroke-width', 10)
                     .attr('fill', 'none')
-                    .attr('stroke-linecap', 'round')
+                    //.attr('stroke-linecap', 'round')
                     .attr('stroke-dasharray', function() {
                         let strokeLength = this.getTotalLength();
                         this.progress = this.getTotalLength() - window.pageYOffset;
@@ -57,10 +56,10 @@ module.exports = new AnimatedSheet('#svg-2', {
                         let lineSpeed = 1.5;
 
                         if(Foundation.MediaQuery.current === 'medium') {
-                            lineSpeed = 7;
+                            lineSpeed = 4;
                         }
                         if(Foundation.MediaQuery.current === 'small') {
-                            lineSpeed = 16;
+                            lineSpeed = 5;
                         }
                         let progress = this.getTotalLength()-posY*lineSpeed;
 
@@ -91,16 +90,15 @@ module.exports = new AnimatedSheet('#svg-2', {
             }
         },
         {
-            from: 1550,
+            from: 0,
             to: 2000,
             remove: false,
             create: function(svg) {
                 let w = 1920; // resolution the viewbox scaling is based on
-                let h = 1080;
                 let path = [
                     [w/2-230, 1000],
                     [w/2-450, 1220],
-                    [w/2-450, 2000]
+                    [w/2-450, 2150]
                 ];
                 let bezierLine = d3
                     .line()
@@ -121,7 +119,6 @@ module.exports = new AnimatedSheet('#svg-2', {
                     .attr('stroke', '#FFFFFF')
                     .attr('stroke-width', 10)
                     .attr('fill', 'none')
-                    .attr('stroke-linecap', 'round')
                     .attr('stroke-dasharray', function() {
                         let strokeLength = this.getTotalLength();
                         this.progress = this.getTotalLength() - window.pageYOffset;
@@ -134,21 +131,21 @@ module.exports = new AnimatedSheet('#svg-2', {
                 return this;
             },
             interpolate: function(svg, createScope, interpolatePercent) {
-              //return;
-                var self = this;
                 this.element
                     .attr('stroke-dashoffset', function() {
-                        //let startY = $(svg.node()).offset().top;
-                        let startY = 3630;
-                        let posY = Math.max(0, window.pageYOffset-startY)
-                        let lineSpeed = 1.5;
+                        let svgY = $(svg.node()).offset().top;
 
+                        let lineSpeed = 1.5;
+                        let startY = svgY + 900;
                         if(Foundation.MediaQuery.current === 'medium') {
-                            lineSpeed = 7;
+                            lineSpeed = 3.90;
+                            startY = svgY + 100;
+                        } else if(Foundation.MediaQuery.current === 'small') {
+                            lineSpeed = 4;
+                            startY = svgY;
                         }
-                        if(Foundation.MediaQuery.current === 'small') {
-                            lineSpeed = 16;
-                        }
+
+                        let posY = Math.max(0, window.pageYOffset-startY);
                         let progress = this.getTotalLength()-posY*lineSpeed;
 
                         // event when path has reached its full length
@@ -167,11 +164,10 @@ module.exports = new AnimatedSheet('#svg-2', {
             remove: false,
             create: function(svg) {
                 let w = 1920; // resolution the viewbox scaling is based on
-                let h = 1080;
                 let path = [
                     [w/2-160, 1000],
                     [w/2-400, 1250],
-                    [w/2-400, 2000]
+                    [w/2-400, 2150]
                 ];
                 let bezierLine = d3
                     .line()
@@ -192,7 +188,6 @@ module.exports = new AnimatedSheet('#svg-2', {
                     .attr('stroke', '#FFFFFF')
                     .attr('stroke-width', 10)
                     .attr('fill', 'none')
-                    .attr('stroke-linecap', 'round')
                     .attr('stroke-dasharray', function() {
                         let strokeLength = this.getTotalLength();
                         this.progress = this.getTotalLength() - window.pageYOffset;
@@ -205,21 +200,22 @@ module.exports = new AnimatedSheet('#svg-2', {
                 return this;
             },
             interpolate: function(svg, createScope, interpolatePercent) {
-              //return;
                 var self = this;
                 this.element
                     .attr('stroke-dashoffset', function() {
-                        //let startY = $(svg.node()).offset().top;
-                        let startY = 3630;
-                        let posY = Math.max(0, window.pageYOffset-startY)
-                        let lineSpeed = 1.5;
+                        let svgY = $(svg.node()).offset().top;
 
+                        let lineSpeed = 1.5;
+                        let startY = svgY + 900;
                         if(Foundation.MediaQuery.current === 'medium') {
-                            lineSpeed = 7;
+                            lineSpeed = 3.90;
+                            startY = svgY + 100;
+                        } else if(Foundation.MediaQuery.current === 'small') {
+                            lineSpeed = 4;
+                            startY = svgY-50;
                         }
-                        if(Foundation.MediaQuery.current === 'small') {
-                            lineSpeed = 16;
-                        }
+
+                        let posY = Math.max(0, window.pageYOffset-startY);
                         let progress = this.getTotalLength()-posY*lineSpeed;
 
                         // event when path has reached its full length
@@ -238,11 +234,10 @@ module.exports = new AnimatedSheet('#svg-2', {
             remove: false,
             create: function(svg) {
                 let w = 1920; // resolution the viewbox scaling is based on
-                let h = 1080;
                 let path = [
-                    [w/2-92, 1000],
+                    [w/2-120, 1030],
                     [w/2-350, 1270],
-                    [w/2-350, 2000]
+                    [w/2-350, 2150]
                 ];
                 let bezierLine = d3
                     .line()
@@ -263,7 +258,6 @@ module.exports = new AnimatedSheet('#svg-2', {
                     .attr('stroke', '#FFFFFF')
                     .attr('stroke-width', 10)
                     .attr('fill', 'none')
-                    .attr('stroke-linecap', 'round')
                     .attr('stroke-dasharray', function() {
                         let strokeLength = this.getTotalLength();
                         this.progress = this.getTotalLength() - window.pageYOffset;
@@ -276,21 +270,22 @@ module.exports = new AnimatedSheet('#svg-2', {
                 return this;
             },
             interpolate: function(svg, createScope, interpolatePercent) {
-              //return;
                 var self = this;
                 this.element
                     .attr('stroke-dashoffset', function() {
-                        //let startY = $(svg.node()).offset().top;
-                        let startY = 3630;
-                        let posY = Math.max(0, window.pageYOffset-startY)
-                        let lineSpeed = 1.5;
+                        let svgY = $(svg.node()).offset().top;
 
+                        let lineSpeed = 1.5;
+                        let startY = svgY + 900;
                         if(Foundation.MediaQuery.current === 'medium') {
-                            lineSpeed = 7;
+                            lineSpeed = 3.90;
+                            startY = svgY + 100;
+                        } else if(Foundation.MediaQuery.current === 'small') {
+                            lineSpeed = 4;
+                            startY = svgY-50;
                         }
-                        if(Foundation.MediaQuery.current === 'small') {
-                            lineSpeed = 16;
-                        }
+
+                        let posY = Math.max(0, window.pageYOffset-startY);
                         let progress = this.getTotalLength()-posY*lineSpeed;
 
                         // event when path has reached its full length

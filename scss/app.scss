@@ -59,6 +59,7 @@
 }
 
 .size-72 { font-size: 72px; }
+.size-60 { font-size: 60px; }
 
 .fi-social-facebook {color:dodgerblue;font-size:2rem;}
 .fi-social-youtube{color:red;font-size:2rem;}
@@ -70,38 +71,7 @@
 body {
   font-family: "Open Sans", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif !important;
   font-weight: 200;
-  font-size: 20px;
-}
-
-.title-bar {
-  z-index: 9001;
-  width: 100%;
-}
-.top-bar {
-  z-index: 9001;
-  width: 100%;
-}
-
-.sticky {
-  width: 100%;
-  z-index: 9001;
-  position:fixed;
-  // fixed elements android fix:
-  -webkit-backface-visibility: hidden;
-}
-
-.no-js {
-  @include breakpoint(small only) {
-    .top-bar {
-      display: none;
-    }
-  }
-
-  @include breakpoint(medium) {
-    .title-bar {
-      display: none;
-    }
-  }
+  font-size: 16px;
 }
 
 /* wrapper */
@@ -122,27 +92,18 @@ body {
   width: 100%;
   height: 2000px;
   @include breakpoint(medium only) {
-    height: 1024px;
+    height: 750px;
   }
   @include breakpoint(small only) {
-    height: 732px;
+    height: 640px;
   }
-  &.static {
+  &.blurred {
     height: 800px;
     -webkit-filter: blur(7px);
     -moz-filter: blur(7px);
     -o-filter: blur(7px);
     -ms-filter: blur(7px);
     filter: blur(7px);
-  }
-  &.parallax-2 {
-    background: linear-gradient(to bottom, #a0d8ef 0%,#ddf1f9 50%,#feffff 100%) no-repeat center center fixed;
-  }
-  &.parallax-3 {
-    background: linear-gradient(to bottom, #a0d8ef 0%,#ddf1f9 50%,#feffff 100%) no-repeat center center fixed;
-  }
-  &.parallax-4 {
-    background: linear-gradient(to bottom, #a0d8ef 0%,#ddf1f9 50%,#feffff 100%) no-repeat center center fixed;
   }
 }
 
@@ -169,14 +130,14 @@ body {
 .parallax-foreground {
   max-width: 100%;
   padding: 30px;
-  font-size: 20px;
+  font-size: 1rem;
   background-color: #fff;
 }
 
 .parallax-foreground.hero {
   position: absolute;
   background: transparent;
-  top: 30.6vw; //calc(50% - 20vw);
+  top: 33vw;
   left: 3.8vw;
   @include breakpoint(medium only) {
     top: 39vw;
@@ -207,6 +168,8 @@ body {
   padding-bottom: 1.25rem;
 }
 
+/* icon popup animation */
+
 .animate-view-popup {
   -webkit-transform: scale(0);
   -moz-transform: scale(0);
@@ -231,7 +194,7 @@ body {
   transition: all .3s ease;
 }
 
-/* floating animation */
+/* icon floating animation */
 
 @-webkit-keyframes floating {
   0% {
@@ -272,6 +235,42 @@ body {
   color: #0080A0;
 }
 
+/* foundation elements */
+
+.title-bar {
+  z-index: 9001;
+  width: 100%;
+}
+.top-bar {
+  z-index: 9001;
+  width: 100%;
+}
+
+.sticky {
+  width: 100%;
+  z-index: 9001;
+  position:fixed;
+  // fixed elements android fix:
+  -webkit-backface-visibility: hidden;
+  .top-bar, .title-bar {
+    font-size: 1.25rem;
+  }
+}
+
+.no-js {
+  @include breakpoint(small only) {
+    .top-bar {
+      display: none;
+    }
+  }
+
+  @include breakpoint(medium) {
+    .title-bar {
+      display: none;
+    }
+  }
+}
+
 .tool-badge {
   @include label;
   background-color: #a0d3e8;
@@ -280,12 +279,16 @@ body {
 
 .callout {
   p {
-    font-size: 0.8em;
+    font-size: 0.9rem;
   }
+}
+
+.stat {
+  font-size: 1.5rem;
 }
 
 #legal {
   p {
-    font-size: 0.6em;
+    font-size: 0.8rem;
   }
 }

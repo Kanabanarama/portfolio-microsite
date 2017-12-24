@@ -10,7 +10,7 @@ var thirdAnimation = require('./animation-3');
 $(document).foundation();
 
 // TODO: generalize svg attribute initialization somewhere
-var screenWidth = 1920;
+/*var screenWidth = 1920;
 var screenHeight = 2000;
 var positionShiftX = 0;
 var positionShiftY = -(1/(window.innerWidth))*100*100*25;
@@ -21,7 +21,7 @@ var d3Svg = d3
     .attr('width', '100%')
     .attr('height', '2000')
     .attr('viewBox', viewboxValue)
-    .attr('preserveAspectRatio', 'xMinYMin meet');
+    .attr('preserveAspectRatio', 'xMinYMin meet');*/
 
 var path1 = new pathAnimation();
 var icons1 = new popupIcons();
@@ -38,4 +38,4 @@ d3.select(window).on('scroll.scroller', function() {
     sheet3.animate();
 });
 
-var helper = new positionHelper().show();
+//var helper = new positionHelper().show();

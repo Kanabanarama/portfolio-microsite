@@ -109,10 +109,10 @@ module.exports = new AnimatedSheet('#svg-3', {
                         let lineSpeed = 1.6;
 
                         if(Foundation.MediaQuery.current === 'medium') {
-                            lineSpeed = 7;
+                            lineSpeed = 4;
                         }
                         if(Foundation.MediaQuery.current === 'small') {
-                            lineSpeed = 16;
+                            lineSpeed = 7;
                         }
                         let progress = this.getTotalLength()-posY*lineSpeed;
 
@@ -184,10 +184,10 @@ module.exports = new AnimatedSheet('#svg-3', {
                         let lineSpeed = 1.95;
 
                         if(Foundation.MediaQuery.current === 'medium') {
-                            lineSpeed = 8;
+                            lineSpeed = 4;
                         }
                         if(Foundation.MediaQuery.current === 'small') {
-                            lineSpeed = 17;
+                            lineSpeed = 7;
                         }
                         let progress = this.getTotalLength()-posY*lineSpeed;
 
@@ -261,10 +261,10 @@ module.exports = new AnimatedSheet('#svg-3', {
                         let lineSpeed = 2.31;
 
                         if(Foundation.MediaQuery.current === 'medium') {
-                            lineSpeed = 9;
+                            lineSpeed = 4;
                         }
                         if(Foundation.MediaQuery.current === 'small') {
-                            lineSpeed = 18;
+                            lineSpeed = 7;
                         }
                         let progress = this.getTotalLength()-posY*lineSpeed;
 
@@ -335,10 +335,10 @@ module.exports = new AnimatedSheet('#svg-3', {
                         let lineSpeed = 2.46;
 
                         if(Foundation.MediaQuery.current === 'medium') {
-                            lineSpeed = 9;
+                            lineSpeed = 4;
                         }
                         if(Foundation.MediaQuery.current === 'small') {
-                            lineSpeed = 18;
+                            lineSpeed = 7;
                         }
                         let progress = this.getTotalLength()-posY*lineSpeed;
 

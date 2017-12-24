@@ -11,7 +11,7 @@ module.exports = new AnimatedSheet('#svg-1', {
                 this.element = svg
                     .append('g')
                     .attr('class', 'bar')
-                    .attr('transform', 'translate('+(window.innerWidth/2-300)+', 1400)')
+                    .attr('transform', 'translate('+(960-300)+', 1400)')
                     .append('rect')
                     .attr('width', 600)
                     .attr('height', 50)
@@ -33,9 +33,9 @@ module.exports = new AnimatedSheet('#svg-1', {
             remove: true,
             create: function(svg) {
                 this.trajectoryPoints = [
-                    [window.innerWidth/2-275, 1355],
-                    [window.innerWidth-50, 1000],
-                    [window.innerWidth/2-300, 3200]
+                    [960-275, 1355],
+                    [1920-50, 1000],
+                    [960-300, 3200]
                 ];
                 this.trailcurve = d3
                     .line()
@@ -73,9 +73,9 @@ module.exports = new AnimatedSheet('#svg-1', {
             remove: true,
             create: function(svg) {
                 this.trajectoryPoints = [
-                    [window.innerWidth/2-80, 1365],
-                    [window.innerWidth-55, 1100],
-                    [window.innerWidth/2-300, 3000]
+                    [960-80, 1365],
+                    [1920-55, 1100],
+                    [960-300, 3000]
                 ];
                 this.trailcurve = d3
                     .line()
@@ -119,11 +119,11 @@ module.exports = new AnimatedSheet('#svg-1', {
             },
             interpolate: function(svg, createScope, interpolatePercent) {
                 var arc = d3.interpolateObject(
-                    { x: (window.innerWidth / 2 + 100 - 40),
+                    { x: (960 + 100 - 40),
                         y: 1333
                     },
                     {
-                        x: (window.innerWidth - 600),
+                        x: (1920 - 600),
                         y: 3000
                     }
                 );
@@ -145,11 +145,11 @@ module.exports = new AnimatedSheet('#svg-1', {
             },
             interpolate: function(svg, createScope, interpolatePercent) {
                 var arc = d3.interpolateObject(
-                    { x: (window.innerWidth / 2 + 300 - 70),
+                    { x: (960 + 300 - 70),
                         y: 1325
                     },
                     {
-                        x: (window.innerWidth - 300),
+                        x: (1920 - 300),
                         y: 3200
                     }
                 );
