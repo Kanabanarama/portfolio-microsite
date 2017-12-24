@@ -140,11 +140,11 @@ body {
   top: 33vw;
   left: 3.8vw;
   @include breakpoint(medium only) {
-    top: 39vw;
+    top: 35vw;
     left: 1.5vw;
   }
   @include breakpoint(small only) {
-    top: 54vw;
+    top: 38vw;
     left: 0;
   }
 
