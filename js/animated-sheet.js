@@ -44,19 +44,20 @@ module.exports = class AnimatedSheet {
             self.d3Svg
                 .attr('height', 2000)
                 .attr('viewBox', viewboxValue)
-                .attr('preserveAspectRatio', 'xMinYMin meet');
+                .attr('preserveAspectRatio', 'xMidYMin meet');
+                ////.attr('preserveAspectRatio', 'xMidYMin slice');
 
             // FIXME: empty when using webpack (https://github.com/zurb/foundation-sites/issues/10363):
             //if(Foundation.MediaQuery.current === 'small') {
-            if(window.innerWidth <= small) {
+            /*if(window.innerWidth <= small) {
                 self.d3Svg
-                    .attr('height', 667)
+                    .attr('height', 667);
             } else
             //if(Foundation.MediaQuery.current === 'medium') {
             if(window.innerWidth <= medium) {
                 self.d3Svg
-                    .attr('height', 1024)
-            }
+                    .attr('height', 1024);
+            }*/
 
         };
 
@@ -78,7 +79,7 @@ module.exports = class AnimatedSheet {
                 } else {
                     console.warn('The create function should return the element key, so it can be accessed in the animate/interpolate function via the "createScope" parameter')
                 }
-                self.scopes[scopeIndex] = createScope
+                self.scopes[scopeIndex] = createScope;
             });
             reformatViewbox();
             window.addEventListener('resize', reformatViewbox);
@@ -135,6 +136,9 @@ module.exports = class AnimatedSheet {
 
     resizeBreakpointsToMedia(x, y) {
         let factor = 1.115;
+        if(Foundation.MediaQuery.current === 'large') {
+            factor = 0.86;
+        }
         if(Foundation.MediaQuery.current === 'medium') {
             factor = 0.84;
         }
@@ -147,8 +151,6 @@ module.exports = class AnimatedSheet {
             y: y * factor
         };
     };
-
-
 
     static easeOutElastic(t) {
         let p = 0.4;
