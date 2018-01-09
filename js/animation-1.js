@@ -90,7 +90,7 @@ module.exports = new AnimatedSheet('#svg-1', {
                             window.dispatchEvent(endEvent);
                         }
 
-                        return progress;
+                        return Math.max(0, progress);
                     });
             }
         },
