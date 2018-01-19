@@ -76,21 +76,14 @@ module.exports = new AnimatedSheet('#svg-4', {
             interpolate: function(svg, createScope, interpolatePercent) {
                 this.element
                     .text(function(d) {
-                        console.log();
-                        return 'You traveled ' + (window.pageYOffset+window.innerHeight) + ' px';
+                        return '◅ '+(window.pageYOffset+window.innerHeight) + ' px';
                     })
                     .attr('transform', function(d) {
-                        let rotation = 90 * interpolatePercent;
-                        return 'rotate('+rotation+')';
+                        let rotation = 0-90 * interpolatePercent;
+                        let translateX = 925 - interpolatePercent*500;
+                        let translateY = -300 + interpolatePercent*1125;
+                        return 'translate('+translateX+', '+translateY+') rotate('+rotation+' 0 0)';
                     })
-                    .attr('x', function(d) {
-                        let progress = 1135*interpolatePercent-500;
-                        return progress;
-                    })
-                    .attr('y', function(d) {
-                        let progress = -400*interpolatePercent;
-                        return progress;
-                    });
             },
         },
     ],
