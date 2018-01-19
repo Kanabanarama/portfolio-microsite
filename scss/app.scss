@@ -90,21 +90,62 @@ body {
   -o-background-size: cover;
   background-size: cover;
   width: 100%;
-  height: 2000px;
-  @include breakpoint(medium only) {
-    height: 750px;
+  @include breakpoint(xxlarge only) {
+    height: 2000px;
   }
-  @include breakpoint(small only) {
-    height: 640px;
+  &.parallax-1 {
+    @include breakpoint(xlarge only) {
+      height: 1500px;
+    }
+    @include breakpoint(large only) {
+      height: 1300px;
+    }
+    @include breakpoint(medium only) {
+      height: 1100px;
+    }
+    @include breakpoint(small only) {
+      height: 700px;
+    }
   }
-  &.blurred {
+  &.parallax-2 {
+    @include breakpoint(xlarge only) {
+      height: 1000px;
+    }
+    @include breakpoint(large only) {
+      height: 1100px;
+    }
+    @include breakpoint(medium only) {
+      height: 790px;
+    }
+    @include breakpoint(small only) {
+      height: 480px;
+    }
+  }
+  &.parallax-3 {
+    @include breakpoint(xlarge only) {
+      height: 1300px;
+    }
+    @include breakpoint(large only) {
+      height: 1100px;
+    }
+    @include breakpoint(medium only) {
+      height: 750px;
+    }
+    @include breakpoint(small only) {
+      height: 400px;
+    }
+  }
+  &.parallax-4 {
+    height: 1000px;
+  }
+  /*&.blurred {
     height: 800px;
     -webkit-filter: blur(7px);
     -moz-filter: blur(7px);
     -o-filter: blur(7px);
     -ms-filter: blur(7px);
     filter: blur(7px);
-  }
+  }*/
 }
 
 .startpoint {
@@ -128,6 +169,7 @@ body {
 }
 
 .parallax-foreground {
+  position: relative;
   max-width: 100%;
   padding: 30px;
   font-size: 1rem;

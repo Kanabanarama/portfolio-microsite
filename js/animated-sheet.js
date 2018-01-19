@@ -35,14 +35,20 @@ module.exports = class AnimatedSheet {
             let positionShiftX = 0;
             let positionShiftY = -(1/(window.innerWidth))*100*100*25;
             let viewboxValue = positionShiftX+' '+positionShiftY+' '+sheetWidth+' '+sheetHeight;
+
+            let svgHeight = 2000;
+            if(options.config && options.config.height) {
+                svgHeight = parseInt(options.config.height);
+            }
+
             // FIXME: viewbox should vertically touch
-            viewboxValue = "0 -150 1920 2000";
+            viewboxValue = "0 -150 1920 "+svgHeight;
 
             let small = 640;
             let medium = 1024;
 
             self.d3Svg
-                .attr('height', 2000)
+                .attr('height', svgHeight)
                 .attr('viewBox', viewboxValue)
                 .attr('preserveAspectRatio', 'xMidYMin meet');
                 ////.attr('preserveAspectRatio', 'xMidYMin slice');
