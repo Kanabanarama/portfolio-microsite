@@ -329,7 +329,11 @@ body {
   font-size: 1.5rem;
 }
 
-#legal {
+.footer-links a {
+  margin-right: 15px;
+}
+
+#legal, #privacy {
   p {
     font-size: 0.8rem;
   }
