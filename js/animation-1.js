@@ -138,7 +138,7 @@ module.exports = new AnimatedSheet('#svg-1', {
                     .attr('d', this.trailcurve(this.trajectoryPoints))
                     .attr('fill', 'none');
                 this.element = svg
-                    .select('#icon-clipboard');
+                    .select('#icon-1');
 
                 return this;
             },
@@ -178,7 +178,7 @@ module.exports = new AnimatedSheet('#svg-1', {
                     .attr('d', this.trailcurve(this.trajectoryPoints))
                     .attr('fill', 'none');
                 this.element = svg
-                    .select('#icon-database');
+                    .select('#icon-2');
 
                 return this;
             },
@@ -204,7 +204,7 @@ module.exports = new AnimatedSheet('#svg-1', {
             remove: true,
             create: function(svg) {
                 this.element = svg
-                    .select('#icon-cloud')
+                    .select('#icon-3')
 
                 return this;
             },
@@ -220,7 +220,7 @@ module.exports = new AnimatedSheet('#svg-1', {
                 );
                 var pos = arc(interpolatePercent);
                 return svg
-                    .select('#icon-cloud')
+                    .select('#icon-3')
                     .attr('transform', 'translate('+ pos.x + ', ' + pos.y + ')');
             }
         },
@@ -230,7 +230,7 @@ module.exports = new AnimatedSheet('#svg-1', {
             remove: true,
             create: function(svg) {
                 this.element = svg
-                    .select('#icon-app')
+                    .select('#icon-4')
 
                 return this;
             },
@@ -246,7 +246,7 @@ module.exports = new AnimatedSheet('#svg-1', {
                 );
                 var pos = arc(interpolatePercent);
                 return svg
-                    .select('#icon-app')
+                    .select('#icon-4')
                     .attr('transform', 'translate('+ pos.x + ', ' + pos.y + ')');
             }
         }
