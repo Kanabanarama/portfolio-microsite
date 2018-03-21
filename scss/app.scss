@@ -54,6 +54,12 @@
     padding: 0.2rem 0.1rem;
     a {
       padding: 0;
+      -webkit-filter: grayscale(100%);
+      filter: grayscale(100%);
+      &:hover {
+        -webkit-filter: grayscale(0%);
+        filter: grayscale(0%);
+      }
     }
   }
 }
