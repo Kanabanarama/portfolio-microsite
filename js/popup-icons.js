@@ -1,7 +1,7 @@
 // CSS Icon Animations
 module.exports = class PopupIcons {
 
-    init() {
+    constructor() {
         window.addEventListener('pathEnd', this.animate);
     }
 
