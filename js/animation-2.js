@@ -11,9 +11,9 @@ module.exports = new AnimatedSheet('#svg-2', {
                 let w = 1920; // resolution the viewbox scaling is based on
                 let path = [
                     [w/2+800, -150],
-                    [w/2+800, 600],
-                    [w/2+100, 600],
-                    [w/2-100, 800],
+                    [w/2+800, 529],
+                    [w/2+100, 529],
+                    [w/2-100, 729],
                 ];
                 let bezierLine = d3
                     .line()
